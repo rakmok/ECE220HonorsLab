@@ -7,8 +7,8 @@
     generated 'matrix' array of the same size
  */
 
-int scramble(char str);
-int descramble(char str);
+int scramble(char str[]);
+int descramble(char str[]);
 
 /*I'm applying some code online at:
     https://www.sanfoundry.com/c-program-find-inverse-matrix/

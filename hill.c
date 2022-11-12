@@ -1,15 +1,58 @@
 #include "hill.h"
 #include "math.h"
+#define SIZE 99
 
-int scramble(char str)
+int scramble(char str[])
 {
+    /*Getting the size of the string*/
+    int count = 0;
+    while (str != '\0')
+    {
+        count++;
+        str++;
+    }
+
+    /*elaborate way of checking if count is a square up to 99^2*/
+    int i, j;
+    int is_square = 0; // boolean checker
+    int square;        // if is_sqaure == 1, what count the square of
+    for (i = 1; i < SIZE + 1; i++)
+    {
+        for (j = 1; j < SIZE + 1; j++)
+            ;
+        {
+            if (j == i)
+            {
+                if (count == i * j)
+                {
+                    is_square = 1;
+                    square = i;
+                }
+            }
+        }
+    }
+    /*can't implement hill if not a sqaure matrix*/
+    if (is_square == 0)
+    {
+        return is_square; // return out if not square
+    }
+
+    /*creating the encoded matrix*/
+    i = 0;
+    int encode[count];
+    for (i = 0; i < count; i++)
+    {
+        encode[i] = 1 + count + count % square; // my encoding pattern
+    }
+
+    /*change the input string to its corresponding value and multiply by endoded matrix*/
 }
-int descramble(char str)
+int descramble(char str[])
 {
 }
 void matrix(char c[][], int n)
 {
-    float a[25][25];
+    float a[SIZE][SIZE];
     float k = n;
     int i, j;
 
@@ -20,9 +63,9 @@ void matrix(char c[][], int n)
         cofactor(a, k);
 }
 /*For calculating Determinant of the Matrix */
-float determinant(float a[25][25], float k)
+float determinant(float a[SIZE][SIZE], float k)
 {
-    float s = 1, det = 0, b[25][25];
+    float s = 1, det = 0, b[SIZE][SIZE];
     int i, j, m, n, c;
     if (k == 1)
     {
@@ -61,9 +104,9 @@ float determinant(float a[25][25], float k)
     return (det);
 }
 
-void cofactor(float num[25][25], float f)
+void cofactor(float num[SIZE][SIZE], float f)
 {
-    float b[25][25], fac[25][25];
+    float b[SIZE][SIZE], fac[SIZE][SIZE];
     int p, q, m, n, i, j;
     for (q = 0; q < f; q++)
     {
@@ -94,10 +137,10 @@ void cofactor(float num[25][25], float f)
     transpose(num, fac, f);
 }
 /*Finding transpose of matrix*/
-void transpose(float num[25][25], float fac[25][25], float r)
+void transpose(float num[SIZE][SIZE], float fac[SIZE][SIZE], float r)
 {
     int i, j;
-    float b[25][25], inverse[25][25], d;
+    float b[SIZE][SIZE], inverse[SIZE][SIZE], d;
 
     for (i = 0; i < r; i++)
     {
