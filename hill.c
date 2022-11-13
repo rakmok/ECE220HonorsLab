@@ -11,6 +11,7 @@ int scramble(char str[])
         count++;
         str++;
     }
+    str = str - count; // putting string ptr back to original address
 
     /*elaborate way of checking if count is a square up to 99^2*/
     int i, j;
@@ -37,15 +38,28 @@ int scramble(char str[])
         return is_square; // return out if not square
     }
 
-    /*creating the encoded matrix*/
+    /*creating the encoded matrix and input matrix*/
+    char convert[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '_'};
+    int encode[count], input[count];
+
     i = 0;
-    int encode[count];
     for (i = 0; i < count; i++)
     {
-        encode[i] = 1 + count + count % square; // my encoding pattern
+        encode[i] = count + i % square; // my encoding pattern
+
+        j = 0;
+        while (j < 64)
+        { // iterate through convert str
+            if (str[i] == convert[j])
+            {                 // if input string char matches convert str alphanumeric..
+                input[i] = j; // set corresponding index of found char into input
+                break;        // only one matching instance so once found exit for next input str char
+            }
+            j++; // using j and not str because I don't want to put it back to original addr again
+        }
     }
 
-    /*change the input string to its corresponding value and multiply by endoded matrix*/
+    /*multiplying input string by encoded matrix to get scrambled string*/
 }
 int descramble(char str[])
 {
