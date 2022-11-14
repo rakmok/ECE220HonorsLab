@@ -16,11 +16,11 @@ int scramble(char str[])
     /*elaborate way of checking if count is a square up to 99^2*/
     int i, j;
     int is_square = 0; // boolean checker
-    int square;        // if is_sqaure == 1, what count the square of
+    int square;        // if square matrix, what are the dimensions of it
     for (i = 1; i < SIZE + 1; i++)
     {
         for (j = 1; j < SIZE + 1; j++)
-            ;
+
         {
             if (j == i)
             {
@@ -28,8 +28,13 @@ int scramble(char str[])
                 {
                     is_square = 1;
                     square = i;
+                    break;
                 }
             }
+        }
+        if (is_square == 1)
+        {
+            break; // want to get out of nested for with two breaks
         }
     }
     /*can't implement hill if not a sqaure matrix*/
@@ -60,6 +65,21 @@ int scramble(char str[])
     }
 
     /*multiplying input string by encoded matrix to get scrambled string*/
+    i = 0, j = 0;
+    int result[count];
+    for (i = 0; i < square; i++)
+    {
+        for (j = 0; j < square; j++)
+        {
+            result[i] = 0;
+            int k = 0;
+            for (k = 0; k < square; k++)
+            {
+                result[i * square + j] = input[i * square + k] * encode[k * square + j];
+                // 2d matrix syntax would be result[i][j] = input[i][k]*encode[k][j]
+            }
+        }
+    }
 }
 int descramble(char str[])
 {
