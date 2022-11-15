@@ -12,6 +12,6 @@ int descramble(char str, int n);
     type of character in the input string. For example,
     if the input string is BHJhueBlhjkJK, then the
     above functions will only call shift_alphabetic.*/
-int shift_alphabetic(char c, int n);
-int shift_alphanumeric(char c, int n);
-int shift_all(char c, int n);
+char shift_alphabetic(char c, int n);
+char shift_alphanumeric(char c, int n);
+char shift_all(char c, int n);
