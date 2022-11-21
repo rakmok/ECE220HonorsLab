@@ -11,7 +11,7 @@ int scramble(char str[])
         count++;
         str++;
     }
-    str = str - count; // putting string ptr back to original address
+    str -= count; // putting string ptr back to original address
 
     /*elaborate way of checking if count is a square up to 99^2*/
     int i, j;
@@ -22,7 +22,7 @@ int scramble(char str[])
         for (j = 1; j < SIZE + 1; j++)
 
         {
-            if (j == i)
+            if (i == j)
             {
                 if (count == i * j)
                 {
