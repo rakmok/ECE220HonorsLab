@@ -5,8 +5,8 @@
     they both take in a string and int argument; the
     string to scramble/de-scramble and the int to
     shift to the next character by that amount.*/
-int scramble(char str[], int n);
-int descramble(char str[], int n);
+int caesar_scramble(char str[], int n);
+int caesar_descramble(char str[], int n);
 
 /*The helper functions below are called based on the
     type of character in the input string. For example,

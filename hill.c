@@ -2,7 +2,7 @@
 #include "math.h"
 #define SIZE 99
 
-int scramble(char str[])
+int hill_scramble(char str[])
 {
     /*Getting the size of the string*/
     int count = 0;
@@ -81,7 +81,7 @@ int scramble(char str[])
         }
     }
 }
-int descramble(char str[])
+int hill_descramble(char str[])
 {
 }
 void matrix(char c[][], int n)

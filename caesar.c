@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include "caesar.h"
 
-int scramble(char str[], int n)
+int caesar_scramble(char str[], int n)
 {
     int count = 0;
 
@@ -35,7 +35,7 @@ int scramble(char str[], int n)
     }
     return 0;
 }
-int descramble(char str[], int n); // might not need this function, we can just call scramble with -n
+int caesar_descramble(char str[], int n); // might not need this function, we can just call scramble with -n
 
 char shift_alphabetic(char c, int n)
 {

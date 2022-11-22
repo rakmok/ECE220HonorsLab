@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#define SIZE 99
 
 /*The functions below will create a 2d array based
    on the divisibility of the string and pass that
@@ -7,8 +8,8 @@
     generated 'matrix' array of the same size
  */
 
-int scramble(char str[]);
-int descramble(char str[]);
+int hill_scramble(char str[]);
+int hill_descramble(char str[]);
 
 /*I'm applying some code online at:
     https://www.sanfoundry.com/c-program-find-inverse-matrix/
@@ -20,6 +21,6 @@ int descramble(char str[]);
 void matrix(char c[][], int n);
 
 /*These functions are part of the online code */
-float determinant(float[][25], float);
-void cofactor(float[][25], float);
-void transpose(float[][25], float[][25], float);
+float determinant(float[][SIZE], float);
+void cofactor(float[][SIZE], float);
+void transpose(float[][SIZE], float[][SIZE], float);
