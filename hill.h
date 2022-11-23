@@ -4,12 +4,15 @@
 
 /*The functions below will create a 2d array based
    on the divisibility of the string and pass that
-    to the matrix function to multiply by a
-    generated 'matrix' array of the same size
+   to the matrix function to multiply by a
+   generated 'matrix' array of the same size;
+   the boolean is check if the input string is even
+   a square or else program will use caesar instead.
  */
 
-int hill_scramble(char str[]);
-int hill_descramble(char str[]);
+int hill_scramble_boolean(char str[]);
+char[] hill_scramble(char str[], int square);
+char[] hill_descramble(char str[]);
 
 /*I'm applying some code online at:
     https://www.sanfoundry.com/c-program-find-inverse-matrix/

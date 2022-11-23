@@ -2,7 +2,7 @@
 #include "math.h"
 #define SIZE 99
 
-int hill_scramble(char str[])
+int hill_scramble_boolean(char str[])
 {
     /*Getting the size of the string*/
     int count = 0;
@@ -16,7 +16,6 @@ int hill_scramble(char str[])
     /*elaborate way of checking if count is a square up to 99^2*/
     int i, j;
     int is_square = 0; // boolean checker
-    int square;        // if square matrix, what are the dimensions of it
     for (i = 1; i < SIZE + 1; i++)
     {
         for (j = 1; j < SIZE + 1; j++)
@@ -26,22 +25,31 @@ int hill_scramble(char str[])
             {
                 if (count == i * j)
                 {
-                    is_square = 1;
-                    square = i;
+                    is_square = i;
                     break;
                 }
             }
         }
-        if (is_square == 1)
+        if (is_square != 0)
         {
             break; // want to get out of nested for with two breaks
         }
     }
+
     /*can't implement hill if not a sqaure matrix*/
-    if (is_square == 0)
+    return is_square; // returns 0 if not square or nonzero square dimensions
+}
+
+char[] hill_scramble(char str[], int square)
+{
+    /*Getting the size of the string*/
+    int count = 0;
+    while (str != '\0')
     {
-        return is_square; // return out if not square
+        count++;
+        str++;
     }
+    str -= count; // putting string ptr back to original address
 
     /*creating the encoded matrix and input matrix*/
     char convert[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '_'};
@@ -81,7 +89,7 @@ int hill_scramble(char str[])
         }
     }
 }
-int hill_descramble(char str[])
+char[] hill_descramble(char str[])
 {
 }
 void matrix(char c[][], int n)

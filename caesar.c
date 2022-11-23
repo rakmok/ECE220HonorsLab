@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include "caesar.h"
 
-int caesar_scramble(char str[], int n)
+char[] caesar_scramble(char str[], int n)
 {
     int count = 0;
 
@@ -20,22 +20,19 @@ int caesar_scramble(char str[], int n)
         if (isalpha(str[i]))
         { // string contains alphabetics only
             output[i] = shift_alphabetic(str[i], n);
-            return 1;
         }
         else if (isalpha(str[i]) && isdigit(str[i]))
         { // string contains alphanumerics only
             output[i] = shift_alphanumeric(str[i], n);
-            return 1;
         }
         else
         { // string contains everything else
             output[i] = shift_all(str[i], n);
-            return 1;
         }
     }
-    return 0;
+    return output;
 }
-int caesar_descramble(char str[], int n); // might not need this function, we can just call scramble with -n
+char[] caesar_descramble(char str[], int n); // might not need this function, we can just call scramble with -n
 
 char shift_alphabetic(char c, int n)
 {
