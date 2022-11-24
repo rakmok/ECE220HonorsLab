@@ -32,7 +32,11 @@ char[] caesar_scramble(char str[], int n)
     }
     return output;
 }
-char[] caesar_descramble(char str[], int n); // might not need this function, we can just call scramble with -n
+
+char[] caesar_descramble(char str[], int n)
+{ // might not need this function, we can just call scramble with -n directly in main
+    caesar_scramble(str, -n);
+}
 
 char shift_alphabetic(char c, int n)
 {

@@ -37,7 +37,7 @@ int hill_scramble_boolean(char str[])
     }
 
     /*can't implement hill if not a sqaure matrix*/
-    return is_square; // returns 0 if not square or nonzero square dimensions
+    return is_square; // returns 0 if not square or nonzero square dimensions if square
 }
 
 char[] hill_scramble(char str[], int square)

@@ -7,9 +7,9 @@ int main()
 {
     // welcome output
     printf("Welcome to the steganography and cipher project!\n");
-    printf("Please enter a string to encypt.\n");
+    printf("Please enter a string of length less than 1000 characters to encypt.\n");
 
-    char input_string[];
+    char input_string[1000];
     scanf("%s", &input_string);
 
     /* creating file to store user inputted string
@@ -25,23 +25,24 @@ int main()
 
     // Decide on Cipher
     int digit;
-    char encypted[];
-    if (hill_scramble_boolean != 0)
+    char encrypted[1000];
+    if (hill_scramble_boolean(input_string) != 0)
     {
         printf("Since you're input string can be parsed into a square matrix, it will be encrypted using a hill cipher.\n");
-        encypted = hill_scramble(input_string, hill_scramble_boolean);
+        encrypted = hill_scramble(input_string, hill_scramble_boolean(input_string));
     }
     else
     {
-        printf("Please enter a digit to shift your input string by.\n");
+        printf("You're input string will be encrypted using a monoalphabetic cipher.\nPlease enter a digit to shift your input string by.\n");
         scanf("%d", &digit);
+        printf("Perfect! Encrypting now.");
         encrypted = caesar_scramble(input_string, digit);
     }
 
     // Ask if user wants back just encrypted string or image with encypted string
     int str_or_image = -1;
-    printf("Enter 0 if you want the encrypted string back.\n");
-    printf("Enter 1 if you want the encrypted image back.\n");
+    printf("Enter 0 if you want the encrypted string back or\n");
+    printf("enter 1 if you want the encrypted image back.\n");
     while (str_or_image == -1)
     {
         scanf("%d", &str_or_image);
@@ -54,7 +55,7 @@ int main()
     // Output encrypted string or image
     if (str_or_image == 0)
     {
-        printf("%d", encrypted);
+        printf("%s", encrypted);
     }
     else
     {
