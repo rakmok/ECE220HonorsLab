@@ -11,8 +11,8 @@
  */
 
 int hill_scramble_boolean(char str[]);
-char[] hill_scramble(char str[], int square);
-char[] hill_descramble(char str[]);
+char *hill_scramble(char str[], int square);
+char *hill_descramble(char str[]);
 
 /*I'm applying some code online at:
     https://www.sanfoundry.com/c-program-find-inverse-matrix/
@@ -21,7 +21,7 @@ char[] hill_descramble(char str[]);
     The matrix function is equivalent to the main function
     of the online code, and I will be adapting it for my use.
  */
-void matrix(char c[][], int n);
+void matrix(int n);
 
 /*These functions are part of the online code */
 float determinant(float[][SIZE], float);

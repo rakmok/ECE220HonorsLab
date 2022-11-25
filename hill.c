@@ -1,17 +1,17 @@
 #include "hill.h"
 #include "math.h"
+#include <string.h>
 #define SIZE 99
 
 int hill_scramble_boolean(char str[])
 {
     /*Getting the size of the string*/
-    int count = 0;
-    while (str != '\0')
+    int count = 0, s = 0;
+    while (str[s] != '\0')
     {
         count++;
-        str++;
+        s++;
     }
-    str -= count; // putting string ptr back to original address
 
     /*elaborate way of checking if count is a square up to 99^2*/
     int i, j;
@@ -40,22 +40,21 @@ int hill_scramble_boolean(char str[])
     return is_square; // returns 0 if not square or nonzero square dimensions if square
 }
 
-char[] hill_scramble(char str[], int square)
+char *hill_scramble(char str[], int square)
 {
     /*Getting the size of the string*/
-    int count = 0;
-    while (str != '\0')
+    int count = 0, s = 0;
+    while (str[s] != '\0')
     {
         count++;
-        str++;
+        s++;
     }
-    str -= count; // putting string ptr back to original address
 
     /*creating the encoded matrix and input matrix*/
     char convert[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '_'};
     int encode[count], input[count];
 
-    i = 0;
+    int i = 0, j;
     for (i = 0; i < count; i++)
     {
         encode[i] = count + i % square; // my encoding pattern
@@ -74,29 +73,46 @@ char[] hill_scramble(char str[], int square)
 
     /*multiplying input string by encoded matrix to get scrambled string*/
     i = 0, j = 0;
-    int result[count];
+    int output[count];
     for (i = 0; i < square; i++)
     {
         for (j = 0; j < square; j++)
         {
-            result[i] = 0;
+            output[i] = 0;
             int k = 0;
             for (k = 0; k < square; k++)
             {
-                result[i * square + j] = input[i * square + k] * encode[k * square + j];
+                output[i * square + j] = input[i * square + k] * encode[k * square + j];
                 // 2d matrix syntax would be result[i][j] = input[i][k]*encode[k][j]
             }
         }
     }
+
+    // output array filled with ints that represnt chars; convert ints back to chars based on convert array
+    char encryptedChar[count];
+    for (i = 0; i < count; i++)
+    {
+        encryptedChar[i] = convert[output[i]];
+    }
+
+    char *encrypted = (char *)malloc(count * sizeof(char)); // dynamically allocating memory so not lost when returning to main
+    strcpy(encrypted, encryptedChar);                       // copying result array onto heap
+
+    return encrypted;
 }
-char[] hill_descramble(char str[])
+char *hill_descramble(char str[])
 {
+    int count = 4;
+    char output[1000] = "To be written";
+    char *decrypted = (char *)malloc(count * sizeof(char)); // dynamically allocating memory so not lost when returning to main
+    strcpy(decrypted, output);                              // copying result array onto heap
+
+    return decrypted;
 }
-void matrix(char c[][], int n)
+void matrix(int n)
 {
     float a[SIZE][SIZE];
     float k = n;
-    int i, j;
 
     float d = determinant(a, k);
     if (d == 0)

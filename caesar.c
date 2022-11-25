@@ -1,17 +1,16 @@
 #include <stdlib.h>
 #include "caesar.h"
 
-char[] caesar_scramble(char str[], int n)
+char *caesar_scramble(char str[], int n)
 {
     int count = 0;
 
     // getting size of str
-    while (str != '\0')
+    int k = 0;
+    while (str[k] != '\0')
     {
-        count++ str++;
-        if (*str == '0')
+        count++, k++;
     }
-    str -= count; // resetting str ptr back to start of string
 
     // implementation for shifting and outputting
     char output[count];
@@ -30,12 +29,15 @@ char[] caesar_scramble(char str[], int n)
             output[i] = shift_all(str[i], n);
         }
     }
-    return output;
+    char *encrypted = (char *)malloc(count * sizeof(char)); // dynamically allocating memory so not lost when returning to main
+    strcpy(encrypted, output);                              // copying result array onto heap
+
+    return encrypted;
 }
 
-char[] caesar_descramble(char str[], int n)
+char *caesar_descramble(char str[], int n)
 { // might not need this function, we can just call scramble with -n directly in main
-    caesar_scramble(str, -n);
+    return caesar_scramble(str, -n);
 }
 
 char shift_alphabetic(char c, int n)

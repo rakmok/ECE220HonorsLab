@@ -10,22 +10,22 @@ int main()
     printf("Please enter a string of length less than 1000 characters to encypt.\n");
 
     char input_string[1000];
-    scanf("%s", &input_string);
+    scanf("%s", input_string);
 
-    /* creating file to store user inputted string
+    /*creating file to store user inputted string
     FILE *inFile = fopen("encrypt.txt", "w");
     if (inFile == NULL)
     {
         printf("You do not have PHP access to create a new file.\n");
     }
 
-    // copying inputted string to text file
+    //copying inputted string to text file
     fprintf(infile, "%s", input_string);
     */
 
     // Decide on Cipher
     int digit;
-    char encrypted[1000];
+    char *encrypted;
     if (hill_scramble_boolean(input_string) != 0)
     {
         printf("Since you're input string can be parsed into a square matrix, it will be encrypted using a hill cipher.\n");
@@ -35,7 +35,7 @@ int main()
     {
         printf("You're input string will be encrypted using a monoalphabetic cipher.\nPlease enter a digit to shift your input string by.\n");
         scanf("%d", &digit);
-        printf("Perfect! Encrypting now.");
+        printf("Perfect! Encrypting now.\n");
         encrypted = caesar_scramble(input_string, digit);
     }
 
