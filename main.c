@@ -65,7 +65,8 @@ int main()
     }
     else
     {
-        printf("The image is in your repository.\n");
+        steg_main(); // calling steg_main to do steg implementation
+        printf("The image contains your string and is in your repository.\n");
     }
 
     // fclose(inFile);
