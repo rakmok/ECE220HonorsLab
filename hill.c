@@ -42,16 +42,10 @@ int hill_scramble_boolean(char str[])
 
 char *hill_scramble(char str[], int square)
 {
-    /*Getting the size of the string*/
-    int count = 0, s = 0;
-    while (str[s] != '\0')
-    {
-        count++;
-        s++;
-    }
+    int count = square * square;
 
     /*creating the encoded matrix and input matrix*/
-    char convert[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '_'};
+    char convert[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '_', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '+', '=', ':', ';', ',', '.', '?', '/', '\'', '<', '>', '~', '`'};
     int encode[count], input[count];
 
     int i = 0, j;
@@ -60,7 +54,7 @@ char *hill_scramble(char str[], int square)
         encode[i] = count + i % square; // my encoding pattern
 
         j = 0;
-        while (j < 64)
+        while (j < 87)
         { // iterate through convert str
             if (str[i] == convert[j])
             {                 // if input string char matches convert str alphanumeric..
@@ -71,32 +65,39 @@ char *hill_scramble(char str[], int square)
         }
     }
 
-    /*multiplying input string by encoded matrix to get scrambled string*/
+    /*multiplying input string by encoded matrix to get scrambled message (still all ints)*/
     i = 0, j = 0;
     int output[count];
     for (i = 0; i < square; i++)
     {
         for (j = 0; j < square; j++)
         {
-            output[i] = 0;
-            int k = 0;
+            int k = 0, add = 0;
             for (k = 0; k < square; k++)
             {
-                output[i * square + j] = input[i * square + k] * encode[k * square + j];
+                add += input[i * square + k] * encode[k * square + j];
                 // 2d matrix syntax would be result[i][j] = input[i][k]*encode[k][j]
             }
+            output[i * square + j] = add;
         }
     }
 
-    // output array filled with ints that represnt chars; convert ints back to chars based on convert array
-    char encryptedChar[count];
+    // output array filled with ints that represent chars; convert ints back to chars based on convert array
+    char encryptedChar[count + 1];
     for (i = 0; i < count; i++)
     {
-        encryptedChar[i] = convert[output[i]];
+        if (output[i] < 87)
+        {
+            encryptedChar[i] = convert[output[i]];
+        }
+        else
+        { // if greater than 87, not in range of convert array so use %
+            encryptedChar[i] = convert[output[i] % 87];
+        }
     }
-
-    char *encrypted = (char *)malloc(count * sizeof(char)); // dynamically allocating memory so not lost when returning to main
-    strcpy(encrypted, encryptedChar);                       // copying result array onto heap
+    encryptedChar[count] = '\0';                                  // manually adding terminating null char
+    char *encrypted = (char *)malloc((count + 1) * sizeof(char)); // dynamically allocating memory so not lost when returning to main
+    strcpy(encrypted, encryptedChar);                             // copying result array onto heap including count + 1 for null character
 
     return encrypted;
 }
@@ -104,8 +105,8 @@ char *hill_descramble(char str[])
 {
     int count = 4;
     char output[1000] = "To be written";
-    char *decrypted = (char *)malloc(count * sizeof(char)); // dynamically allocating memory so not lost when returning to main
-    strcpy(decrypted, output);                              // copying result array onto heap
+    char *decrypted = (char *)malloc((count + 1) * sizeof(char)); // dynamically allocating memory so not lost when returning to main
+    strcpy(decrypted, output);                                    // copying result array onto heap including + 1 for null character
 
     return decrypted;
 }

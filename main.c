@@ -7,9 +7,9 @@ int main()
 {
     // welcome output
     printf("Welcome to the steganography and cipher project!\n");
-    printf("Please enter a string of length less than 1000 characters to encypt.\n");
+    printf("Please enter a string of no more than 999 characters to encypt.\n");
 
-    char input_string[1000];
+    char input_string[1000]; // last char for null terminated string
     scanf("%s", input_string);
 
     /*creating file to store user inputted string
@@ -28,14 +28,14 @@ int main()
     char *encrypted;
     if (hill_scramble_boolean(input_string) != 0)
     {
-        printf("Since you're input string can be parsed into a square matrix, it will be encrypted using a hill cipher.\n");
+        printf("Since your input string can be parsed into a square matrix, it will be encrypted using a hill cipher.\n");
         encrypted = hill_scramble(input_string, hill_scramble_boolean(input_string));
     }
     else
     {
-        printf("You're input string will be encrypted using a monoalphabetic cipher.\nPlease enter a digit to shift your input string by.\n");
+        printf("Your input string will be encrypted using a monoalphabetic cipher.\nPlease enter a digit to shift your input string by.\n");
         scanf("%d", &digit);
-        printf("Perfect! Encrypting now.\n");
+        printf("Perfect! Encrypting now.\n.\n.\n.\n");
         encrypted = caesar_scramble(input_string, digit);
     }
 
@@ -55,7 +55,13 @@ int main()
     // Output encrypted string or image
     if (str_or_image == 0)
     {
-        printf("%s", encrypted);
+        int i = 0;
+        while (encrypted[i] != '\0')
+        {
+            printf("%c", encrypted[i]);
+            i++;
+        }
+        printf("\n");
     }
     else
     {
@@ -63,5 +69,7 @@ int main()
     }
 
     // fclose(inFile);
+    free(encrypted);
+
     return 0;
 }
