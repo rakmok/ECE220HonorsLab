@@ -110,6 +110,8 @@ char *hill_descramble(char str[])
 
     return decrypted;
 }
+
+/*
 void matrix(int n)
 {
     float a[SIZE][SIZE];
@@ -121,7 +123,7 @@ void matrix(int n)
     else
         cofactor(a, k);
 }
-/*For calculating Determinant of the Matrix */
+For calculating Determinant of the Matrix
 float determinant(float a[SIZE][SIZE], float k)
 {
     float s = 1, det = 0, b[SIZE][SIZE];
@@ -195,7 +197,7 @@ void cofactor(float num[SIZE][SIZE], float f)
     }
     transpose(num, fac, f);
 }
-/*Finding transpose of matrix*/
+Finding transpose of matrix
 void transpose(float num[SIZE][SIZE], float fac[SIZE][SIZE], float r)
 {
     int i, j;
@@ -227,3 +229,5 @@ void transpose(float num[SIZE][SIZE], float fac[SIZE][SIZE], float r)
         printf("\n");
     }
 }
+
+*/

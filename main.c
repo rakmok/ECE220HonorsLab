@@ -8,20 +8,10 @@ int main()
     // welcome output
     printf("Welcome to the steganography and cipher project!\n");
     printf("Please enter a string of no more than 999 characters to encypt.\n");
+    printf("Do not include any spaces or a buffer overflow will occur!\n");
 
     char input_string[1000]; // last char for null terminated string
     scanf("%s", input_string);
-
-    /*creating file to store user inputted string
-    FILE *inFile = fopen("encrypt.txt", "w");
-    if (inFile == NULL)
-    {
-        printf("You do not have PHP access to create a new file.\n");
-    }
-
-    //copying inputted string to text file
-    fprintf(infile, "%s", input_string);
-    */
 
     // Decide on Cipher
     int digit;
@@ -43,12 +33,13 @@ int main()
     int str_or_image = -1;
     printf("Enter 0 if you want the encrypted string back or\n");
     printf("enter 1 if you want the encrypted image back.\n");
-    while (str_or_image == -1)
+    while (str_or_image != 0 && str_or_image != 1)
     {
         scanf("%d", &str_or_image);
         if (str_or_image != 0 && str_or_image != 1)
         {
             printf("Please enter 0 or 1.\n");
+            printf("...\n");
         }
     }
 
@@ -65,11 +56,15 @@ int main()
     }
     else
     {
-        steg_main(); // calling steg_main to do steg implementation
+        int i = 0;
+        while (encrypted[i] != '\0')
+        {
+            i++;
+        }
+        steg_main(encrypted, i); // calling steg_main to do steg implementation
         printf("The image contains your string and is in your repository.\n");
     }
 
-    // fclose(inFile);
     free(encrypted);
 
     return 0;
