@@ -6,6 +6,4 @@
  */
 void steg_main(char *encrypted, int count);
 
-/*The code under the comment "converting encrypted string into binary and "stashing" in image" in steg.c
- *  has been adapted from a thread in StackOverflow: https://stackoverflow.com/questions/41384262/convert-string-to-binary-in-c.
- */
+/*Lines 60-62 adapted from a thread in StackOverflow: https://stackoverflow.com/questions/41384262/convert-string-to-binary-in-c. */

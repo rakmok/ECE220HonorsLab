@@ -1,13 +1,15 @@
 #include "steg.h"
 #include <string.h>
 
+#define size_string 11 // soft-coding size of string to be up to 2^11 bits when converted
+
 void steg_main(char *encrypted, int count)
 {
     // Ask if user has an image to stash bits in or wants to use a default image (that program provides)
     int ownImage_or_defaultImage = -1;
     printf("Enter 0 if you have your own image or\n");
     printf("enter 1 if you want to use the default image.\n");
-    while (ownImage_or_defaultImage == -1)
+    while (ownImage_or_defaultImage != 0 && ownImage_or_defaultImage != 1)
     {
         scanf("%d", &ownImage_or_defaultImage);
         if (ownImage_or_defaultImage != 0 && ownImage_or_defaultImage != 1)
@@ -52,22 +54,38 @@ void steg_main(char *encrypted, int count)
         }
     }
 
-    // converting encrypted string into binary and "stashing" in image
-    char *binary = (char *)malloc(8 * count * sizeof(char) + 1); // each char is one byte (8 bits) and + 1 at the end for null terminator
-    binary[0] = '\0';
+    // converting encrypted string into binary
+    char *binary = (char *)malloc(8 * count * sizeof(char) + size_string); // each char is one byte (8 bits) + size of string data to be stored first
+    if (binary == NULL)
+    {
+        printf("Not enough space on heap to stash encrypted string.\n");
+        return;
+    }
+    int m = size_string; // leaving space for size of string in binary
+    int j;
     for (int i = 0; i < count; i++)
     {
-        for (int j = 7; j >= 0; j--)
+        for (j = 7; j >= 0; j--)
         {
-            if (encrypted[i] & (1 << j))
-            {
-                strcat(binary, "1");
-            }
-            else
-            {
-                strcat(binary, "0");
-            }
+            binary[m] = (encrypted[i] >> j) & 1 ? 1 : 0;
+            m++;
         }
+    }
+
+    // storing size of string (in binary) at beginning of bitmap
+    m = 0;
+    for (j = size_string - 1; j >= 0; j--)
+    {
+        binary[m] = (count >> j) & 1 ? 1 : 0;
+        m++;
+    }
+
+    // stashing encrypted string bits into least significant byte of image
+    int k = 0;
+    while (k < count)
+    {
+        fprintf(inFile, "%d", binary[k]);
+        k++;
     }
 
     free(binary);
