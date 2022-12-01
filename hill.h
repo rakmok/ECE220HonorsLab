@@ -12,7 +12,7 @@
 
 int hill_scramble_boolean(char str[]);
 char *hill_scramble(char str[], int square);
-char *hill_descramble(char str[]);
+char *hill_descramble(char str[], int square);
 
 /*I'm applying some code online at:
     https://www.sanfoundry.com/c-program-find-inverse-matrix/

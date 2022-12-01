@@ -101,7 +101,7 @@ char *hill_scramble(char str[], int square)
 
     return encrypted;
 }
-char *hill_descramble(char str[])
+char *hill_descramble(char str[], int square)
 {
     int count = 4;
     char output[1000] = "To be written";

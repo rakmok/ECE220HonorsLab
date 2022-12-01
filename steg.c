@@ -3,7 +3,7 @@
 
 #define size_string 11 // soft-coding size of string to be up to 2^11 bits when converted
 
-void steg_main(char *encrypted, int count)
+void steg_stash(char *encrypted, int count)
 {
     // Ask if user has an image to stash bits in or wants to use a default image (that program provides)
     int ownImage_or_defaultImage = -1;
@@ -19,11 +19,15 @@ void steg_main(char *encrypted, int count)
     }
 
     char fileName[1000];
+    int image_width;
+    int image_height;
     FILE *inFile;
     if (ownImage_or_defaultImage == 0)
     {
-        printf("Please enter your image name including file type (beach.png, sunshine.JPEG, etc.)\n");
-        scanf("%s", fileName);
+        printf("Please enter your image name followed by a space and\n");
+        printf("then the image height followed by a space and then the image width\n");
+        printf("For example: beach.png 256 256 or sunshine.JPEG 1024 4032.\n");
+        sscanf("%s %d %d", fileName, &image_width, &image_height);
         int fileName_check = -1; //-1 if invalid, changes to 1 if valid
 
         // check if valid file extension
@@ -82,7 +86,7 @@ void steg_main(char *encrypted, int count)
 
     // stashing encrypted string bits into least significant byte of image
     int k = 0;
-    while (k < count)
+    while (k < (count * 8 + size_string))
     {
         fprintf(inFile, "%d", binary[k]);
         k++;
@@ -90,4 +94,52 @@ void steg_main(char *encrypted, int count)
 
     free(binary);
     fclose(inFile);
+}
+
+char *steg_remove()
+{
+    // Ask if user has their own image or if they used the default image to stash their encrypted string
+    int ownImage_or_defaultImage = -1;
+    printf("Enter 0 if you used your own image or enter 1 if you\n");
+    printf("used the default image to stash your encrypted string.\n");
+    while (ownImage_or_defaultImage != 0 && ownImage_or_defaultImage != 1)
+    {
+        scanf("%d", &ownImage_or_defaultImage);
+        if (ownImage_or_defaultImage != 0 && ownImage_or_defaultImage != 1)
+        {
+            printf("Please enter 0 or 1.\n");
+        }
+    }
+    FILE *inFile;
+    if (ownImage_or_defaultImage == 0)
+    {
+        char fileName[1000];
+        inFile = fopen(fileName, "r");
+    }
+    else
+    {
+        inFile = fopen("everest.jpg", "r");
+    }
+
+    // start by removing 11 bits which represent size of encrypted bits from image, changing back to int, and storing in count
+    int i;
+    int size_binary[11];
+    for (i = 0; i < 11; i++)
+    {
+        size_binary[i] = fscanf(inFile, "%d", size_binary);
+    }
+    int count = 1;
+
+    int encrypted_bits[count * 8];
+    // getting rest of bits from image based on count and storing in output
+    for (i = 0; i < count; i++)
+    {
+        encrypted_bits[i] = fscanf(inFile, "%d", encrypted_bits);
+    }
+
+    // convert binary to char
+    char *encrypted = (char *)malloc(count + 1); // dynamically allocating memory for encrypted bits and null terminating char
+    encrypted[count] = '\0';                     // manually setting terminated null char
+
+    return encrypted;
 }
