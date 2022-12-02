@@ -45,7 +45,7 @@ char *hill_scramble(char str[], int square)
     int count = square * square;
 
     /*creating the encoded matrix and input matrix*/
-    char convert[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '_', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '+', '=', ':', ';', ',', '.', '?', '/', '\'', '<', '>', '~', '`'};
+    char convert[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '_', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '+', '=', ':', ';', ',', '.', '?', '/', '\\', '<', '>', '~', '`'};
     int encode[count], input[count];
 
     int i = 0, j;
@@ -103,10 +103,53 @@ char *hill_scramble(char str[], int square)
 }
 char *hill_descramble(char str[], int square)
 {
-    int count = 4;
-    char output[1000] = "To be written";
+    int count = square * square;
+
+    /*creating the encoded matrix to get the inverse of it as well as the input matrix*/
+    char convert[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '_', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '+', '=', ':', ';', ',', '.', '?', '/', '\\', '<', '>', '~', '`'};
+    int encode[count], encode_inverse[count], input[count];
+
+    int i = 0, j;
+    for (i = 0; i < count; i++)
+    {
+        encode[i] = count + i % square; // my encoding pattern
+
+        j = 0;
+        while (j < 87)
+        { // iterate through convert str
+            if (str[i] == convert[j])
+            {                 // if input string char matches convert str alphanumeric..
+                input[i] = j; // set corresponding index of found char into input
+                break;        // only one matching instance so once found exit for next input str char
+            }
+            j++; // using j and not str because I don't want to put it back to original addr again
+        }
+    }
+
+    // getting the inverse of the encode matrix
+
+    /*multiplying input string by inverse of encoded matrix to get unscrambled message (still all ints)*/
+    i = 0, j = 0;
+    int output[count];
+    for (i = 0; i < square; i++)
+    {
+        for (j = 0; j < square; j++)
+        {
+            int k = 0, add = 0;
+            for (k = 0; k < square; k++)
+            {
+                add += input[i * square + k] * encode_inverse[k * square + j];
+                // 2d matrix syntax would be result[i][j] = input[i][k]*encode_inverse[k][j]
+            }
+            output[i * square + j] = add;
+        }
+    }
+
+    // turn output ints into chars (which will be displayed on console as decrypted message)
+    char output_char[count];
+
     char *decrypted = (char *)malloc((count + 1) * sizeof(char)); // dynamically allocating memory so not lost when returning to main
-    strcpy(decrypted, output);                                    // copying result array onto heap including + 1 for null character
+    strcpy(decrypted, output_char);                               // copying result array onto heap including + 1 for null character
 
     return decrypted;
 }
