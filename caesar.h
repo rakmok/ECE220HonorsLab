@@ -19,6 +19,6 @@ int parse_string_alnum(char str[], int count);
     type of character in the input string. For example,
     if the input string is BHJhueBlhjkJK, then the
     above functions will only call shift_alphabetic.*/
-char shift_alphabetic(char c, int n);
-char shift_alphanumeric(char c, int n);
-char shift_all(char c, int n);
+char shift_alphabetic(char c, int n, int encrypt_or_decrypt);
+char shift_alphanumeric(char c, int n, int encrypt_or_decrypt);
+char shift_all(char c, int n, int encrypt_or_decrypt);
