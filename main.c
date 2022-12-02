@@ -9,8 +9,8 @@ int main()
     printf("Welcome to the steganography and cipher project!\n");
 
     int encrypt_or_decrypt = -1;
-    printf("Enter 0 if you want to encrypt a string,\n");
-    printf("enter 1 if you want to decrypt a string,\n");
+    printf("Enter 0 if you want to encrypt a string, ");
+    printf("enter 1 if you want to decrypt a string, ");
     printf("or enter 2 if you want to decrypt an image.\n");
     while (encrypt_or_decrypt != 0 && encrypt_or_decrypt != 1 && encrypt_or_decrypt != 2)
     {
@@ -34,12 +34,14 @@ int main()
         char *encrypted;
         if (hill_scramble_boolean(input_string) != 0)
         {
-            printf("Since your input string can be parsed into a square matrix, it will be encrypted using a hill cipher.\n");
+            printf("\nSince your input string can be parsed into a square matrix, it will be encrypted using a hill cipher.\n");
             encrypted = hill_scramble(input_string, hill_scramble_boolean(input_string));
         }
         else
         {
-            printf("Your input string will be encrypted using a monoalphabetic cipher.\nPlease enter a digit to shift your input string by.\n");
+            printf("\nYour input string will be encrypted using a monoalphabetic cipher.\n");
+            printf("A key will be outputted after a space at the end of your encrypted string. Save it for later as it will be needed for decryption!\n\n");
+            printf("Please enter a digit to shift your input string by.\n");
             scanf("%d", &digit);
             printf("Perfect! Encrypting now.\n.\n.\n.\n");
             encrypted = caesar_scramble(input_string, digit);
@@ -60,6 +62,7 @@ int main()
         }
 
         // Output encrypted string or image
+        printf("\n");
         if (str_or_image == 0)
         {
             int i = 0;
@@ -101,10 +104,10 @@ int main()
         }
         else
         {
-            printf("Your input string was encrypted using a monoalphabetic cipher.\nPlease enter the digit you used to shift your input string by previously.\n");
+            printf("Your input string was encrypted using a monoalphabetic cipher.\nPlease enter the digit you used to shift your input string by when encrypting.\n");
             scanf("%d", &digit);
+            decrypted = caesar_descramble(input_string, digit);
             printf("Perfect! Decrypting now.\n.\n.\n.\n");
-            decrypted = caesar_scramble(input_string, digit);
         }
 
         // output decrypted string
@@ -129,7 +132,8 @@ int main()
         {
             i++;
         }
-        char input_string[i];
+        char input_string[i + 1];
+        input_string[i] = '\0'; // need to put null terminating char at end of input because doesn't transfer from encrypted
 
         // put encrypted ptr into input_string to be decrypted
         i = 0;
@@ -152,7 +156,7 @@ int main()
             printf("Your input string was encrypted using a monoalphabetic cipher.\nPlease enter the digit you used to shift your input string by previously.\n");
             scanf("%d", &digit);
             printf("Perfect! Decrypting now.\n.\n.\n.\n");
-            decrypted = caesar_scramble(input_string, digit);
+            decrypted = caesar_descramble(input_string, digit);
         }
 
         // output decrypted string

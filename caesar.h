@@ -8,6 +8,13 @@
 char *caesar_scramble(char str[], int n);
 char *caesar_descramble(char str[], int n);
 
+/*Two recursive functions used to parse string and determine if string is composed of all alphabetics,
+ *  all alphanumerics, or if it is neither in which case I will use shift_all to encrypt the inputted
+ *  string. The functions return 1 if all alphabetics and all alphanumerics respectively, or return 0 otherwise.
+ */
+int parse_string_alph(char str[], int count);
+int parse_string_alnum(char str[], int count);
+
 /*The helper functions below are called based on the
     type of character in the input string. For example,
     if the input string is BHJhueBlhjkJK, then the
