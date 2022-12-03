@@ -2,15 +2,23 @@
 #include <stdlib.h>
 #define SIZE 99
 
-/*The functions below will create a 2d array based
-   on the divisibility of the string and pass that
-   to the matrix function to multiply by a
-   generated 'matrix' array of the same size;
-   the boolean is check if the input string is even
-   a square or else program will use caesar instead.
+/*The two functions below are boolean checkers
+   to determine if the input string is even
+   a square and if the input string has all the
+   characters in the convert array or else the
+   program won't be able to change the chars to
+   ints; if either returns 0 the program will use
+   caesar instead of hill.
  */
 
 int hill_scramble_boolean(char str[]);
+int hill_scramble_char(char str[]);
+
+/*The functions below will create a 2d array based
+   on the divisibility of the string and pass that
+   to the matrix function to multiply by a
+   generated 'matrix' array of the same size.
+ */
 char *hill_scramble(char str[], int square);
 char *hill_descramble(char str[], int square);
 

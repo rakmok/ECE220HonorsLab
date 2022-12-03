@@ -36,8 +36,40 @@ int hill_scramble_boolean(char str[])
         }
     }
 
-    /*can't implement hill if not a sqaure matrix*/
+    /*can't implement hill if not a square matrix*/
     return is_square; // returns 0 if not square or nonzero square dimensions if square
+}
+
+int hill_scramble_char(char str[])
+{
+    /*Getting the size of the string*/
+    int count = 0, s = 0;
+    while (str[s] != '\0')
+    {
+        count++;
+        s++;
+    }
+
+    /*checking to see if inputted string chars are all in convert array*/
+    char convert[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '_', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '+', '=', ':', ';', ',', '.', '?', '/', '\\', '<', '>', '~', '`'};
+    int i = 0, j, is_valid;
+    for (i = 0; i < count; i++)
+    {
+        j = 0, is_valid = 0;
+        while (j < 87)
+        { // iterate through convert str
+            if (str[i] == convert[j])
+            { // if input string char matches convert str alphanumeric, set is_valid to true
+                is_valid = 1;
+            }
+            j++; // using j and not str because I don't want to put it back to original addr again
+        }
+        if (is_valid == 0)
+        { // if even one char in input string doesn't match convert, hill can't work
+            return is_valid;
+        }
+    }
+    return is_valid; // returns 0 if input string can't be encrypted using hill, 1 if it can
 }
 
 char *hill_scramble(char str[], int square)

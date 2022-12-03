@@ -86,7 +86,7 @@ void steg_stash(char *encrypted, int count)
 
     // stashing encrypted string bits into least significant byte of image
     int k = 0;
-    while (k < (count * 8 + size_string))
+    while (k < ((count * 8) + size_string))
     {
         fprintf(inFile, "%d", binary[k]);
         k++;
@@ -132,7 +132,7 @@ char *steg_remove()
 
     int encrypted_bits[count * 8];
     // getting rest of bits from image based on count and storing in output
-    for (i = 0; i < count; i++)
+    for (i = 0; i < count * 8; i++)
     {
         encrypted_bits[i] = fscanf(inFile, "%d", encrypted_bits);
     }
