@@ -22,16 +22,26 @@ int hill_scramble_char(char str[]);
 char *hill_scramble(char str[], int square);
 char *hill_descramble(char str[], int square);
 
+/*Code failing too many times because my determinants are randomly 0
+   so making a function to check and if it is by some chance, changing
+   my encoding pattern. The function will return 1 if the determinant
+   is good to use in calculations and 0 if not.
+*/
+int determinant_check(int square);
+
 /*I'm applying some code online at:
     https://www.sanfoundry.com/c-program-find-inverse-matrix/
     that finds the inverse of the generated matrix which is
     when it is necessary to descramble the inputted string.
     The matrix function is equivalent to the main function
-    of the online code, and I will be adapting it for my use.
+    of the online code, and I will be adapting it for my use
+    to find the modular multiplicative inverse which is found
+    by multiplying the adjugate matrix by the multiplicative
+    inverse of the encrypt matrix.
  */
 void matrix(int n);
 
 /*These functions are part of the online code */
-float determinant(float[][SIZE], float);
-void cofactor(float[][SIZE], float);
-void transpose(float[][SIZE], float[][SIZE], float);
+float determinant(float[][SIZE], float k);
+float *cofactor(float[][SIZE], float k);
+void transpose(float[][SIZE], float[][SIZE], float k);
