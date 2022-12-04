@@ -32,7 +32,7 @@ int main()
         // Decide on Cipher
         int digit;
         char *encrypted;
-        if (hill_scramble_boolean(input_string) != 0 && hill_scramble_char(input_string) != 0)
+        if (hill_scramble_boolean(input_string) != 0 && hill_scramble_char(input_string) != 0 && determinant_check(hill_scramble_boolean(input_string)) != 0)
         {
             printf("\nSince your input string can be parsed into a square matrix, it will be encrypted using a hill cipher.\n");
             encrypted = hill_scramble(input_string, hill_scramble_boolean(input_string));
@@ -97,7 +97,7 @@ int main()
         // Decrypt based on cipher used to encrypt
         int digit;
         char *decrypted;
-        if (hill_scramble_boolean(input_string) != 0 && hill_scramble_char(input_string) != 0)
+        if (hill_scramble_boolean(input_string) != 0 && hill_scramble_char(input_string) != 0 && determinant_check(hill_scramble_boolean(input_string)) != 0)
         {
             printf("Decrypting now.\n");
             decrypted = hill_descramble(input_string, hill_scramble_boolean(input_string));

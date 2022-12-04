@@ -29,6 +29,11 @@ char *hill_descramble(char str[], int square);
 */
 int determinant_check(int square);
 
+/*Code to generate an encoded matrix: used in three places so for better
+   organization and to ensure the determinant of the matrix is not 0.
+*/
+int *generate_encode(int square);
+
 /*I'm applying some code online at:
     https://www.sanfoundry.com/c-program-find-inverse-matrix/
     that finds the inverse of the generated matrix which is

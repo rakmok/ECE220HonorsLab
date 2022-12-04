@@ -2,6 +2,7 @@
 #include "math.h"
 #include <string.h>
 #define SIZE 99
+#define defined_det 4
 
 int hill_scramble_boolean(char str[])
 {
@@ -78,13 +79,11 @@ char *hill_scramble(char str[], int square)
 
     /*creating the encoded matrix and input matrix*/
     char convert[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '_', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '+', '=', ':', ';', ',', '.', '?', '/', '\\', '<', '>', '~', '`'};
-    int encode[count], input[count];
+    int input[count];
 
     int i = 0, j;
     for (i = 0; i < count; i++)
     {
-        encode[i] = (count * ((i * i + 1) % 87)) + (i % square); // my encoding pattern
-
         j = 0;
         while (j < 87)
         { // iterate through convert str
@@ -96,6 +95,9 @@ char *hill_scramble(char str[], int square)
             j++; // using j and not str because I don't want to put it back to original addr again
         }
     }
+
+    // generating encode based on string size
+    int *encode = generate_encode(square);
 
     if (determinant_check(square) == 0)
     { // if det is 0, can't descramble later, use new encoding pattern
@@ -132,6 +134,7 @@ char *hill_scramble(char str[], int square)
     char *encrypted = (char *)malloc((count + 1) * sizeof(char)); // dynamically allocating memory so not lost when returning to main
     strcpy(encrypted, encryptedChar);                             // copying result array onto heap including count + 1 for null character
 
+    free(encode);
     return encrypted;
 }
 char *hill_descramble(char str[], int square)
@@ -140,13 +143,11 @@ char *hill_descramble(char str[], int square)
 
     /*creating the input matrix based on the encrypted string as well as the encoded matrix to get the inverse of it later*/
     char convert[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '_', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '+', '=', ':', ';', ',', '.', '?', '/', '\\', '<', '>', '~', '`'};
-    int encode[count], encode_inverse[count], input[count];
+    int encode_inverse[count], input[count];
 
     int i = 0, j;
     for (i = 0; i < count; i++)
     {
-        encode[i] = (count * ((i * i + 1) % 87)) + (i % square); // my encoding pattern
-
         j = 0;
         while (j < 87)
         { // iterate through convert str
@@ -159,13 +160,8 @@ char *hill_descramble(char str[], int square)
         }
     }
 
-    if (determinant_check(square) == 0)
-    { // if det is 0, using new encoding pattern
-        for (i = 0; i < count; i++)
-        {
-            encode[i] = (i * i); // failsafe encoding pattern
-        }
-    }
+    // generating encode based on string size
+    int *encode = generate_encode(square);
 
     /* getting the adjugate of the encode matrix */
     float temp[SIZE][SIZE];
@@ -267,6 +263,7 @@ char *hill_descramble(char str[], int square)
     char *decrypted = (char *)malloc((count + 1) * sizeof(char)); // dynamically allocating memory so not lost when returning to main
     strcpy(decrypted, output_char);                               // copying result array onto heap including + 1 for null character
 
+    free(encode);
     return decrypted;
 }
 
@@ -325,6 +322,15 @@ float determinant(float a[SIZE][SIZE], float k)
 
 float *cofactor(float num[SIZE][SIZE], float f)
 {
+    int square = (int)f;
+    float *adjugate_matrix = (float *)malloc((square * square * sizeof(float)));
+    if (f == 1)
+    {
+        adjugate_matrix[0] = 1;
+        return adjugate_matrix;
+    }
+
+    // code to get cofactor of matrix
     float b[SIZE][SIZE], fac[SIZE][SIZE];
     int p, q, m, n, i, j;
     for (q = 0; q < f; q++)
@@ -356,8 +362,6 @@ float *cofactor(float num[SIZE][SIZE], float f)
     // transpose(num, fac, f);
 
     // turning adjugate 2d into 1d matrix to be used in hill_descramble
-    int square = (int)f;
-    float *adjugate_matrix = (float *)malloc((square * square * sizeof(float)));
     i = 0, j = 0;
     for (i = 0; i < f; i++)
     {
@@ -403,16 +407,13 @@ void transpose(float num[SIZE][SIZE], float fac[SIZE][SIZE], float r)
 int determinant_check(int square)
 {
     float temp[SIZE][SIZE];
-    int count = square * square;
-    int encode[count];
+    int *encode; // size count
 
     // generating encode based on string size
-    int i = 0, j = 0;
-    for (i = 0; i < count; i++)
-    {
-        encode[i] = (count * ((i * i + 1) % 87)) + (i % square); // my encoding pattern
-    }
+    encode = generate_encode(square);
+
     // turning encode from 1d to 2d
+    int i, j;
     for (i = 0; i < square; i++)
     {
         for (j = 0; j < square; j++)
@@ -430,4 +431,32 @@ int determinant_check(int square)
     {
         return 0;
     }
+    free(encode);
+}
+int *generate_encode(int square)
+{
+    int *encode = (int *)malloc(square * square * sizeof(int));
+
+    // generating encode based on string size
+    int i = 0, j = 0;
+    for (i = 0; i < square; i++)
+    {
+        for (j = 0; j < square; j++)
+        {
+            if (i == 0)
+            {
+                encode[(i * square) + j] = defined_det; // defined_det is macro that allows me to change what det of encode is
+            }
+            else if (i == j)
+            {
+                encode[(i * square) + j] = 2;
+            }
+            else
+            {
+                encode[(i * square) + j] = 1;
+            }
+        }
+    }
+
+    return encode;
 }
