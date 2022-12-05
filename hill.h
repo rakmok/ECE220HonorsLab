@@ -44,9 +44,10 @@ int *generate_encode(int square);
     by multiplying the adjugate matrix by the multiplicative
     inverse of the encrypt matrix.
  */
-void matrix(int n);
 
-/*These functions are part of the online code */
+/*These functions are part of the online code but have been modified*/
 float determinant(float[][SIZE], float k);
 float *cofactor(float[][SIZE], float k);
+
+/*Unused*/
 void transpose(float[][SIZE], float[][SIZE], float k);

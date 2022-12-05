@@ -2,7 +2,7 @@
 #include "math.h"
 #include <string.h>
 #define SIZE 99
-#define defined_det 4
+#define defined_det 4 // pre-defined determinant of the encode matrix, can be changed to change the encryption pattern
 
 int hill_scramble_boolean(char str[])
 {
@@ -267,18 +267,7 @@ char *hill_descramble(char str[], int square)
     return decrypted;
 }
 
-/*void matrix(int n)
-{
-    float a[SIZE][SIZE];
-    float k = n;
-
-    float d = determinant(a, k);
-    if (d == 0)
-        printf("\nInverse of Entered Matrix is not possible\n");
-    else
-        cofactor(a, k);
-}*/
-// For calculating Determinant of the Matrix
+// For calculating Determinant of the Matrix: not mine from lines 271-309!
 float determinant(float a[SIZE][SIZE], float k)
 {
     float s = 1, det = 0, b[SIZE][SIZE];
@@ -330,7 +319,7 @@ float *cofactor(float num[SIZE][SIZE], float f)
         return adjugate_matrix;
     }
 
-    // code to get cofactor of matrix
+    // code to get cofactor of matrix: not mine from lines 323-350!
     float b[SIZE][SIZE], fac[SIZE][SIZE];
     int p, q, m, n, i, j;
     for (q = 0; q < f; q++)

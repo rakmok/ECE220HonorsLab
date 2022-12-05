@@ -139,6 +139,38 @@ char *caesar_descramble(char str[], int n)
     return decrypted;
 }
 
+int shift_alphabetic_position(char c, int n)
+{
+    char convert[] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+    for (int i = 0; i < 52; i++)
+    {
+        if (c == convert[i]) // if char inputted matches convert array
+        {
+            // if offset greater than convert size return correct int
+            if ((i + n > 52) && ((i + n) % 52 != 0))
+            { // range from 53 to +infinity BUT i + n is NOT a multiple of +52 (i = 0, n = 88 for example)
+                return (i + n) % 52;
+            }
+            else if ((i + n < 0) && (i + n > -52))
+            { // range from -1 to -51 (looping backwards i = 5, n = -6 for example)
+                return 52 - abs(i + n);
+            }
+            else if ((i + n < -52) && ((i + n) % 52 != 0))
+            { // range from -53 to -infinity BUT i + n is NOT a multiple of -52 (i = 0, n = -1000 for example)
+                return 52 - abs((i + n) % 52);
+            }
+            else if ((i + n == 52) || (i + n == -52) || ((i + n) % 52 == 0))
+            { // range of +52, -52, or a multiple of +/- 52 (for example i = 27, n = 25)
+                return i;
+            }
+            else
+            { // range from 0 to 51 (i = 0, n < 52 for example)
+                return i + n;
+            }
+        }
+    }
+    return 0; // never possible because char will be in convert
+}
 char shift_alphabetic(char c, int n, int encrypt_or_decrypt)
 {
     char convert[] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
@@ -148,12 +180,12 @@ char shift_alphabetic(char c, int n, int encrypt_or_decrypt)
         {
             // extreme case where i + n % 52 == 0 in encrypt but when program makes n -> -n, i + n % 52 != 0 in decrypt or vice versa
             // for example: i = 4, n = 100 as 4+100 = 104 % 52 = 0 but 4-100 % 52 != 0
-            if ((encrypt_or_decrypt == 1) && ((i - n) % 52 == 0) && ((i + n) % 52 != 0))
+            if ((encrypt_or_decrypt == 1) && ((i - n) % 52 == 0) && ((i + n) % 52 != 0) && (i != shift_alphabetic_position(c, -1 * n)))
             { // encrypt i + n is a factor of 52 but decrypt is not
                 return convert[i];
             }
             else if ((encrypt_or_decrypt == 1) && ((i - n) % 52 != 0) && ((i + n) % 52 == 0))
-            { // encrypt 1 + n is not a factor of 87 but decrypt is
+            { // encrypt i + n is not a factor of 52 but decrypt is (might not ever reach here but just in case)
                 if ((i - n > 52) && ((i - n) % 52 != 0))
                 { // range from 53 to +infinity BUT i + n is NOT a multiple of +52 (i = 0, n = 88 for example)
                     return convert[(i - n) % 52];
@@ -197,6 +229,39 @@ char shift_alphabetic(char c, int n, int encrypt_or_decrypt)
     }
     return '\0'; // never possible because char will be in convert
 }
+
+int shift_alphanumeric_position(char c, int n)
+{
+    char convert[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+    for (int i = 0; i < 62; i++)
+    {
+        if (c == convert[i]) // if char inputted matches convert array
+        {
+            // if offset greater than convert size return correct int
+            if ((i + n > 62) && ((i + n) % 62 != 0))
+            { // range from 63 to +infinity BUT i + n is NOT a multiple of +62 (i = 0, n = 900 for example)
+                return (i + n) % 62;
+            }
+            else if ((i + n < 0) && (i + n > -62))
+            { // range from -1 to -61 (looping backwards i = 5, n = -60 for example)
+                return 62 - abs(i + n);
+            }
+            else if ((i + n < -62) && ((i + n) % 62 != 0))
+            { // range from -63 to -infinity BUT i + n is NOT a multiple of -62 (i = 0, n = -1000 for example)
+                return 62 - abs((i + n) % 62);
+            }
+            else if ((i + n == 62) || (i + n == -62) || ((i + n) % 62 == 0))
+            { // range of +62, -62, or a multiple of +/- 62 (for example i = 2, n = 60)
+                return i;
+            }
+            else
+            { // range from 0 to 61 (i = 0, n < 52 for example)
+                return i + n;
+            }
+        }
+    }
+    return 0;
+}
 char shift_alphanumeric(char c, int n, int encrypt_or_decrypt)
 {
     char convert[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
@@ -206,7 +271,7 @@ char shift_alphanumeric(char c, int n, int encrypt_or_decrypt)
         {
             // extreme case where i + n % 62 == 0 in encrypt but when program makes n -> -n, i + n % 62 != 0 in decrypt or vice versa
             // for example: i = 2, n = -126 as 2-126 = -124 % 62 = 0 but 2+126 % 62 != 0
-            if ((encrypt_or_decrypt == 1) && ((i - n) % 62 == 0) && ((i + n) % 62 != 0))
+            if ((encrypt_or_decrypt == 1) && ((i - n) % 62 == 0) && ((i + n) % 62 != 0) && ((i + n) % 52 != 0) && (i != shift_alphanumeric_position(c, -1 * n)))
             { // encrypt i + n is a factor of 87 but decrypt is not
                 return convert[i];
             }
@@ -255,6 +320,39 @@ char shift_alphanumeric(char c, int n, int encrypt_or_decrypt)
     }
     return '\0'; // never possible because char will be in convert
 }
+
+int shift_all_position(char c, int n)
+{
+    char convert[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '_', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '+', '=', ':', ';', ',', '.', '?', '/', '\\', '<', '>', '~', '`'};
+    for (int i = 0; i < 87; i++)
+    {
+        if (c == convert[i]) // if char inputted matches convert array
+        {
+            // if offset greater than convert size return correct char
+            if ((i + n > 87) && ((i + n) % 87 != 0))
+            { // range from 88 to +infinity BUT i + n is NOT a multiple of +87 (i = 0, n = 88 for example)
+                return (i + n) % 87;
+            }
+            else if ((i + n < 0) && (i + n > -87))
+            { // range from -1 to - 86 (looping backwards i = 5, n = -60 for example)
+                return 87 - abs(i + n);
+            }
+            else if ((i + n < -87) && ((i + n) % 87 != 0))
+            { // range from -88 to -infinity BUT i + n is NOT a multiple of -87 (i = 0, n = -1000 for example)
+                return 87 - abs((i + n) % 87);
+            }
+            else if ((i + n == 87) || (i + n == -87) || (i + n % 87 == 0))
+            { // range of +87, -87, or a multiple of +/- 87 (for example i = 27, n = 60)
+                return i;
+            }
+            else
+            { // range from 0 to 86 (i = 0, n < 87 for example)
+                return i + n;
+            }
+        }
+    }
+    return 0;
+}
 char shift_all(char c, int n, int encrypt_or_decrypt)
 {
     char convert[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '_', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '+', '=', ':', ';', ',', '.', '?', '/', '\\', '<', '>', '~', '`'};
@@ -265,7 +363,7 @@ char shift_all(char c, int n, int encrypt_or_decrypt)
 
             // extreme case where i + n % 87 == 0 in encrypt but when program makes n -> -n, i + n % 87 != 0 in decrypt or vice versa
             // for example: i = 43, n = -1000 as 43-1000 = -957 % 87 = 0 but 43+1000 % 87 != 0
-            if ((encrypt_or_decrypt == 1) && ((i - n) % 87 == 0) && ((i + n) % 87 != 0))
+            if ((encrypt_or_decrypt == 1) && ((i - n) % 87 == 0) && ((i + n) % 87 != 0) && ((i + n) % 52 != 0) && (i != shift_all_position(c, -1 * n)))
             { // encrypt i + n is a factor of 87 but decrypt is not
                 return convert[i];
             }
@@ -302,7 +400,7 @@ char shift_all(char c, int n, int encrypt_or_decrypt)
             { // range from -88 to -infinity BUT i + n is NOT a multiple of -87 (i = 0, n = -1000 for example)
                 return convert[87 - abs((i + n) % 87)];
             }
-            else if ((i + n == 87) || (i + n == -87) || ((i + n) % 87 == 0))
+            else if ((i + n == 87) || (i + n == -87) || (i + n % 87 == 0))
             { // range of +87, -87, or a multiple of +/- 87 (for example i = 27, n = 60)
                 return convert[i];
             }
