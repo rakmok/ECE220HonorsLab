@@ -180,11 +180,11 @@ char shift_alphabetic(char c, int n, int encrypt_or_decrypt)
         {
             // extreme case where i + n % 52 == 0 in encrypt but when program makes n -> -n, i + n % 52 != 0 in decrypt or vice versa
             // for example: i = 4, n = 100 as 4+100 = 104 % 52 = 0 but 4-100 % 52 != 0
-            if ((encrypt_or_decrypt == 1) && ((i - n) % 52 == 0) && ((i + n) % 52 != 0) && (i != shift_alphabetic_position(c, -1 * n)))
-            { // encrypt i + n is a factor of 52 but decrypt is not
-                return convert[i];
+            if ((encrypt_or_decrypt == 1) && ((i - n) % 52 == 0) && ((i + n) % 52 != 0))
+            { // encrypt i + n is a factor of 52 but decrypt is not == 0)
+                return convert[n % 52];
             }
-            else if ((encrypt_or_decrypt == 1) && ((i - n) % 52 != 0) && ((i + n) % 52 == 0))
+            else
             { // encrypt i + n is not a factor of 52 but decrypt is (might not ever reach here but just in case)
                 if ((i - n > 52) && ((i - n) % 52 != 0))
                 { // range from 53 to +infinity BUT i + n is NOT a multiple of +52 (i = 0, n = 88 for example)
@@ -219,7 +219,7 @@ char shift_alphabetic(char c, int n, int encrypt_or_decrypt)
             }
             else if ((i + n == 52) || (i + n == -52) || ((i + n) % 52 == 0))
             { // range of +52, -52, or a multiple of +/- 52 (for example i = 27, n = 25)
-                return convert[i];
+                return convert[0];
             }
             else
             { // range from 0 to 51 (i = 0, n < 52 for example)
@@ -270,19 +270,19 @@ char shift_alphanumeric(char c, int n, int encrypt_or_decrypt)
         if (c == convert[i]) // if char inputted matches convert array
         {
             // extreme case where i + n % 62 == 0 in encrypt but when program makes n -> -n, i + n % 62 != 0 in decrypt or vice versa
-            // for example: i = 2, n = -126 as 2-126 = -124 % 62 = 0 but 2+126 % 62 != 0
-            if ((encrypt_or_decrypt == 1) && ((i - n) % 62 == 0) && ((i + n) % 62 != 0) && ((i + n) % 52 != 0) && (i != shift_alphanumeric_position(c, -1 * n)))
-            { // encrypt i + n is a factor of 87 but decrypt is not
-                return convert[i];
+            // for example: i = 24, n = 100 as 24+100 = 124 % 62 = 0 but 24-100 % 62 != 0
+            if ((encrypt_or_decrypt == 1) && ((i - n) % 62 == 0) && ((i + n) % 62 != 0))
+            { // encrypt i + n is a factor of 52 but decrypt is not == 0)
+                return convert[n % 62];
             }
-            else if ((encrypt_or_decrypt == 1) && ((i - n) % 62 != 0) && ((i + n) % 62 == 0))
-            { // encrypt 1 + n is not a factor of 87 but decrypt is
+            else
+            { // encrypt i + n is not a factor of 52 but decrypt is (might not ever reach here but just in case)
                 if ((i - n > 62) && ((i - n) % 62 != 0))
                 { // range from 63 to +infinity BUT i + n is NOT a multiple of +62 (i = 0, n = 88 for example)
                     return convert[(i - n) % 62];
                 }
                 else if ((i - n < 0) && (i - n > -62))
-                { // range from -1 to - 61 (looping backwards i = 5, n = -60 for example)
+                { // range from -1 to - 51 (looping backwards i = 5, n = -30 for example)
                     return convert[62 - abs(i - n)];
                 }
                 else if ((i - n < -62) && ((i - n) % 62 != 0))
@@ -290,7 +290,7 @@ char shift_alphanumeric(char c, int n, int encrypt_or_decrypt)
                     return convert[62 - abs((i - n) % 62)];
                 }
                 else
-                { // range from 0 to 61 (i = 0, n < 62 for example)
+                { // range from 0 to 61 (i = 0, n < 52 for example)
                     return convert[i - n];
                 }
             }
@@ -362,19 +362,19 @@ char shift_all(char c, int n, int encrypt_or_decrypt)
         {
 
             // extreme case where i + n % 87 == 0 in encrypt but when program makes n -> -n, i + n % 87 != 0 in decrypt or vice versa
-            // for example: i = 43, n = -1000 as 43-1000 = -957 % 87 = 0 but 43+1000 % 87 != 0
-            if ((encrypt_or_decrypt == 1) && ((i - n) % 87 == 0) && ((i + n) % 87 != 0) && ((i + n) % 52 != 0) && (i != shift_all_position(c, -1 * n)))
-            { // encrypt i + n is a factor of 87 but decrypt is not
-                return convert[i];
+            // for example: i = 74, n = 100 as 74+100 = 174 % 87 = 0 but 74-100 % 87 != 0
+            if ((encrypt_or_decrypt == 1) && ((i - n) % 87 == 0) && ((i + n) % 87 != 0))
+            { // encrypt i + n is a factor of 52 but decrypt is not == 0)
+                return convert[n % 87];
             }
-            else if ((encrypt_or_decrypt == 1) && ((i - n) % 87 != 0) && ((i + n) % 87 == 0))
-            { // encrypt 1 + n is not a factor of 87 but decrypt is
+            else
+            { // encrypt i + n is not a factor of 52 but decrypt is (might not ever reach here but just in case)
                 if ((i - n > 87) && ((i - n) % 87 != 0))
                 { // range from 88 to +infinity BUT i + n is NOT a multiple of +87 (i = 0, n = 88 for example)
                     return convert[(i - n) % 87];
                 }
                 else if ((i - n < 0) && (i - n > -87))
-                { // range from -1 to - 86 (looping backwards i = 5, n = -60 for example)
+                { // range from -1 to - 86 (looping backwards i = 5, n = -30 for example)
                     return convert[87 - abs(i - n)];
                 }
                 else if ((i - n < -87) && ((i - n) % 87 != 0))
@@ -382,7 +382,7 @@ char shift_all(char c, int n, int encrypt_or_decrypt)
                     return convert[87 - abs((i - n) % 87)];
                 }
                 else
-                { // range from 0 to 86 (i = 0, n < 87 for example)
+                { // range from 0 to 86 (i = 0, n < 86 for example)
                     return convert[i - n];
                 }
             }
