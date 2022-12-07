@@ -1,5 +1,6 @@
 #include "steg.h"
 #include <string.h>
+#include <math.h>
 
 #define size_string 11 // soft-coding size of string to be up to 2^11 bits when converted
 
@@ -85,6 +86,7 @@ void steg_stash(char *encrypted, int count)
     }
 
     // stashing encrypted string bits into least significant byte of image
+    fprintf(inFile, "\n\n\n"); // first lines hold essential information
     int k = 0;
     while (k < ((count * 8) + size_string))
     {
@@ -121,14 +123,25 @@ char *steg_remove()
         inFile = fopen("everest.jpg", "r");
     }
 
+    fscanf(inFile, "\n\n\n"); // first lines hold essential information
+
     // start by removing 11 bits which represent size of encrypted bits from image, changing back to int, and storing in count
     int i;
-    int size_binary[11];
-    for (i = 0; i < 11; i++)
+    int size_binary[size_string];
+    for (i = 0; i < size_string; i++)
     {
         size_binary[i] = fscanf(inFile, "%d", size_binary);
     }
-    int count = 1;
+
+    int count = 0, power = 0;
+    for (i = size_string - 1; i >= 0; i--)
+    { // converting binary to decimal
+        if (size_binary[i] == 1)
+        {
+            count += pow(2, power);
+        }
+        power++;
+    }
 
     int encrypted_bits[count * 8];
     // getting rest of bits from image based on count and storing in output
